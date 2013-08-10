@@ -14,9 +14,11 @@ First install the plugin. This can be done by placing smtp.php in it's own plugi
 Next, setup add the constants to wp-config.php
 
 The minimum requirement is setting the host, username, and password. Everything else will be assumed from some defaults.
-`define('GLOBAL_SMTP_HOST','mail.example.com');
+```
+define('GLOBAL_SMTP_HOST','mail.example.com');
 define('GLOBAL_SMTP_USER','admin@example.com');
-define('GLOBAL_SMTP_PASSWORD','password');`
+define('GLOBAL_SMTP_PASSWORD','password');
+```
 
 Assumed defaults:
 From -> Network admin email address
@@ -25,10 +27,12 @@ Port -> 465
 Secure -> ssl
 
 You can specifu your own with these statements:
-`define('GLOBAL_SMTP_FROM','you@example.com');
+```
+define('GLOBAL_SMTP_FROM','you@example.com');
 define('GLOBAL_SMTP_FROM_NAME','Your Name');
 define('GLOBAL_SMTP_PORT',587);
-define('GLOBAL_SMTP_SECURE;','tls');`
+define('GLOBAL_SMTP_SECURE;','tls');
+```
 
 You can also specify some other values for the SMTP mailer:
 
