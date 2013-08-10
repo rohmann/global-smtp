@@ -37,8 +37,11 @@ function global_setup_network_smtp($phpmailer) {
 
     //Optional
     $phpmailer->Sender = defined('GLOBAL_SMTP_RETURN_PATH') ? GLOBAL_SMTP_RETURN_PATH : GLOBAL_SMTP_FROM;
-    $phpmailer->AddReplyTo(defined('GLOBAL_SMTP_REPLYTO_FROM') ? GLOBAL_SMTP_REPLYTO_FROM : GLOBAL_SMTP_FROM,
-                           defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : GLOBAL_SMTP_FROM_NAME);
+
+    if(defined('GLOBAL_SMTP_REPLYTO_FROM')) {
+        $phpmailer->AddReplyTo(GLOBAL_SMTP_REPLYTO_FROM, defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : GLOBAL_SMTP_FROM_NAME);    
+    }
+    
 }
 
 //If WP_DEBUG is enabled, this will perform strict validation and output debug messages otherwise this always returns true after assuming defaults
