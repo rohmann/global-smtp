@@ -55,10 +55,12 @@ That will prevent Multisite SMTP from initializing, allowing your prefered servi
 
 Here's a sample configuration for using MailTrap in development or staging environments.
 
-`define('GLOBAL_SMTP_HOST','mailtrap.io');
+```
+define('GLOBAL_SMTP_HOST','mailtrap.io');
 define('GLOBAL_SMTP_USER','yourusername');
 define('GLOBAL_SMTP_PASSWORD','imasecret');
-define('GLOBAL_SMTP_SECURE', 'tls');`
+define('GLOBAL_SMTP_SECURE', 'tls');
+```
 
 Debugging
 ---------
