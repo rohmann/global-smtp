@@ -25,7 +25,7 @@ FromName -> Network Name
 Port -> 465
 Secure -> ssl
 
-You can specifu your own with these statements:
+You can specify your own with these statements:
 ```
 define('GLOBAL_SMTP_FROM','you@example.com');
 define('GLOBAL_SMTP_FROM_NAME','Your Name');
