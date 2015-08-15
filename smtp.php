@@ -142,7 +142,15 @@ class Multisite_SMTP {
     public function mailer( $phpmailer ) {
 
         //debug?
-        if(defined('GLOBAL_SMTP_DEBUG') && GLOBAL_SMTP_DEBUG ) $phpmailer->SMTPDebug = true;
+        if ( defined('GLOBAL_SMTP_DEBUG') && GLOBAL_SMTP_DEBUG && is_admin() && ( !defined('DOING_AJAX') || !DOING_AJAX ) ) {
+
+            $phpmailer->SMTPDebug = true;
+
+            // There's no way to close this <pre> without plugging wp_mail, which this project aims to avoid
+            // It will make the PHPMailer output more readable, but only when used with: https://wordpress.org/plugins/check-email/
+            if ( isset($_GET['page']) && 'checkemail' == $_GET['page'] )
+                echo '<pre>';
+        }
 
         //preset
         $phpmailer->Mailer = "smtp";
@@ -165,6 +173,7 @@ class Multisite_SMTP {
             $phpmailer->AddReplyTo(GLOBAL_SMTP_REPLYTO_FROM, defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : $phpmailer->FromName );
         }
     }
+
 }
 
 /**
