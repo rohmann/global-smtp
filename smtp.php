@@ -39,6 +39,14 @@ class Multisite_SMTP {
             add_action( 'phpmailer_init', array( $this, 'mailer') );
         }
 
+        if ( defined('GLOBAL_SMTP_FROM') ) {
+            add_filter( 'wp_mail_from', array( $this, 'get_from' ), -999 );
+        }
+
+        if ( defined('GLOBAL_SMTP_FROM_NAME') ) {
+            add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ), -999 );
+        }
+
         unset($this->validations);
     }
 
@@ -57,8 +65,7 @@ class Multisite_SMTP {
     protected function prepare_settings() {
         $this->validations = new stdClass;
         $this->validations->required = array('GLOBAL_SMTP_HOST','GLOBAL_SMTP_USER','GLOBAL_SMTP_PASSWORD');
-        $this->validations->is_email = array('GLOBAL_SMTP_RETURN_PATH','GLOBAL_SMTP_FROM','GLOBAL_SMTP_REPLYTO_FROM');
-        $this->validations->not_empty = array('GLOBAL_SMTP_FROM','GLOBAL_SMTP_FROM_NAME');
+        $this->validations->is_email = array('GLOBAL_SMTP_RETURN_PATH','GLOBAL_SMTP_REPLYTO_FROM');
         $this->validations->is_int = array('GLOBAL_SMTP_PORT','GLOBAL_SMTP_TIMEOUT');
         $this->validations->should_be = array('GLOBAL_SMTP_SECURE' => array('ssl','tls','none'),
             'GLOBAL_SMTP_AUTH_TYPE' => array('LOGIN','PLAIN','NTLM') );
@@ -68,8 +75,8 @@ class Multisite_SMTP {
             'GLOBAL_SMTP_PORT'=> 465,
             'GLOBAL_SMTP_SECURE' => 'ssl',
             'GLOBAL_SMTP_TIMEOUT' => 10,
-            'GLOBAL_SMTP_FROM' => get_site_option('admin_email','',true),
-            'GLOBAL_SMTP_FROM_NAME' => get_site_option('site_name','WordPress',true),
+            'GLOBAL_SMTP_FROM' => '',
+            'GLOBAL_SMTP_FROM_NAME' => '',
             'GLOBAL_SMTP_AUTH_TYPE' => 'LOGIN',
         );
 
@@ -78,6 +85,22 @@ class Multisite_SMTP {
                 define($setting, $default);
             }
         }
+    }
+
+    /**
+     * Callback for wp_mail_from filter
+     * @return string from email address
+     */
+    public function get_from() {
+        return GLOBAL_SMTP_FROM;
+    }
+
+    /**
+     * Callback for wp_mail_from_name filter
+     * @return string from email address
+     */
+    public function get_from_name() {
+        return GLOBAL_SMTP_FROM_NAME;
     }
 
     /**
@@ -95,12 +118,6 @@ class Multisite_SMTP {
         foreach ($this->validations->is_email as $setting) {
             if (defined($setting) && !is_email(constant($setting))) {
                 return new WP_Error( 'multisite-smtp', sprintf( __( 'Value of %s is not a valid email address. Check wp-config.php, or ensure a valid fallback is available.', 'multisite-smtp' ), $setting ) );
-            }
-        }
-
-        foreach ($this->validations->not_empty as $setting) {
-            if(defined($setting) && constant($setting)=="") {
-                return new WP_Error( 'multisite-smtp', sprintf( __( '%s  is empty. Check wp-config.php, or ensure a valid fallback is available.', 'multisite-smtp' ), $setting ) );
             }
         }
 
@@ -137,17 +154,15 @@ class Multisite_SMTP {
         $phpmailer->Password = GLOBAL_SMTP_PASSWORD;
 
         //assumed
-        $phpmailer->From = GLOBAL_SMTP_FROM;
-        $phpmailer->FromName = GLOBAL_SMTP_FROM_NAME;
         $phpmailer->Port = GLOBAL_SMTP_PORT;
         $phpmailer->SMTPSecure = GLOBAL_SMTP_SECURE;
         $phpmailer->AuthType = GLOBAL_SMTP_AUTH_TYPE;
 
         //Optional
-        $phpmailer->Sender = defined('GLOBAL_SMTP_RETURN_PATH') ? GLOBAL_SMTP_RETURN_PATH : GLOBAL_SMTP_FROM;
+        $phpmailer->Sender = defined('GLOBAL_SMTP_RETURN_PATH') ? GLOBAL_SMTP_RETURN_PATH : $phpmailer->From;
 
         if(defined('GLOBAL_SMTP_REPLYTO_FROM')) {
-            $phpmailer->AddReplyTo(GLOBAL_SMTP_REPLYTO_FROM, defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : GLOBAL_SMTP_FROM_NAME);
+            $phpmailer->AddReplyTo(GLOBAL_SMTP_REPLYTO_FROM, defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : $phpmailer->FromName );
         }
     }
 }
