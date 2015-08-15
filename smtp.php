@@ -129,7 +129,7 @@ class Multisite_SMTP {
 
         //preset
         $phpmailer->Mailer = "smtp";
-        $phpmailer->SMTPAuth = true;
+        $phpmailer->SMTPAuth = ( 'none' != GLOBAL_SMTP_SECURE );
 
         //required
         $phpmailer->Host = GLOBAL_SMTP_HOST;
