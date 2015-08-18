@@ -32,6 +32,7 @@ class Multisite_SMTP {
 
         $this->prepare_settings();
         $check = $this->validate();
+        $this->cancel = array( 'from' => false, 'from_name' => false );
 
         if( is_wp_error( $check ) ) {
             trigger_error($check->get_error_message(), E_USER_WARNING);
@@ -47,6 +48,7 @@ class Multisite_SMTP {
             add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ), -999 );
         }
 
+        add_filter( 'wp_mail', array( $this, 'check_headers') );
         unset($this->validations);
     }
 
@@ -57,6 +59,14 @@ class Multisite_SMTP {
      */
     public static function launch() {
         self::$instance = (defined('GLOBAL_SMTP_DISABLE') && GLOBAL_SMTP_DISABLE ) ? null : new self();
+    }
+
+    /**
+     * Get this plugin's main class instance
+     * @return object
+     */
+    public static function instance() {
+        return self::$instance;
     }
 
     /**
@@ -88,19 +98,27 @@ class Multisite_SMTP {
     }
 
     /**
-     * Callback for wp_mail_from filter
+     * Callback for wp_mail_from filter.
+     * Applies the from address constant if a
+     * "From" header was not present.
      * @return string from email address
      */
-    public function get_from() {
-        return GLOBAL_SMTP_FROM;
+    public function get_from( $from ) {
+        $value = ($this->cancel['from']) ? $from : GLOBAL_SMTP_FROM;
+        $this->cancel['from'] = false;
+        return $value;
     }
 
     /**
      * Callback for wp_mail_from_name filter
+     * Applies the from name constant if a
+     * "From" header was not present.
      * @return string from email address
      */
-    public function get_from_name() {
-        return GLOBAL_SMTP_FROM_NAME;
+    public function get_from_name( $from_name ) {
+        $value = ($this->cancel['from_name']) ? $from_name : GLOBAL_SMTP_FROM_NAME;
+        $this->cancel['from_name'] = false;
+        return $value;
     }
 
     /**
@@ -134,6 +152,30 @@ class Multisite_SMTP {
         }
 
         return true;
+    }
+
+    /**
+     * Filter for `wp_mail` used for introspection
+     * @param  array $atts Arguments passed into wp_mail
+     * @return array       Unmodified $atts
+     */
+    public function check_headers( $atts ) {
+
+        if ( is_string( $atts['headers'] ) && strpos( $atts['headers'], 'From: ' ) !== false ) {
+            $this->cancel['from'] = true;
+            $this->cancel['from_name'] = true;
+        }
+
+        if ( is_array( $atts['headers'] ) ) {
+            foreach ($atts['headers'] as $header) {
+                if ( is_string( $header ) && strpos( $header, 'From: ' ) !== false ) {
+                    $this->cancel['from'] = true;
+                    $this->cancel['from_name'] = true;
+                }
+            }
+        }
+
+        return $atts;
     }
 
     /**
@@ -172,6 +214,7 @@ class Multisite_SMTP {
         if(defined('GLOBAL_SMTP_REPLYTO_FROM')) {
             $phpmailer->AddReplyTo(GLOBAL_SMTP_REPLYTO_FROM, defined('GLOBAL_SMTP_REPLYTO_FROM_NAME') ? GLOBAL_SMTP_REPLYTO_FROM_NAME : $phpmailer->FromName );
         }
+
     }
 
 }
