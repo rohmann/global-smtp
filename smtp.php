@@ -5,7 +5,7 @@ Plugin URI: https://github.com/rohmann/wp-multisite-smtp
 Description: Allows for the setup of SMTP mail via constants in wp-config.php
 Author: Alexander Rohmann
 Author URI: https://github.com/rohmann/
-Version: 2.0
+Version: 2.1.1
 Text Domain: multisite-smtp
 */
 
