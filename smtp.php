@@ -1,19 +1,19 @@
 <?php
 /*
-Plugin Name: Multisite SMTP
-Plugin URI: https://github.com/rohmann/wp-multisite-smtp
+Plugin Name: Global SMTP
+Plugin URI: https://github.com/rohmann/wp-global-smtp
 Description: Allows for the setup of SMTP mail via constants in wp-config.php
 Author: Alexander Rohmann
 Author URI: https://github.com/rohmann/
-Version: 2.1.1
-Text Domain: multisite-smtp
+Version: 2.2.0
+Text Domain: global-smtp
 */
 
 /**
  * Configures WordPress PHPMailer with values from wp-config.php
- * Documentation: https://github.com/rohmann/wp-multisite-smtp
+ * Documentation: https://github.com/rohmann/wp-global-smtp
  */
-class Multisite_SMTP {
+class Global_SMTP_Mailer {
 
     /**
      * I am a singleton
@@ -129,25 +129,25 @@ class Multisite_SMTP {
 
         foreach ($this->validations->required as $setting) {
             if(!defined($setting)) {
-                return new WP_Error( 'multisite-smtp', sprintf( __( '%s is required for Multisite SMTP. Please define this in wp-config.php.', 'multisite-smtp' ), $setting ) );
+                return new WP_Error( 'global-smtp', sprintf( __( '%s is required for Multisite SMTP. Please define this in wp-config.php.', 'global-smtp' ), $setting ) );
             }
         }
 
         foreach ($this->validations->is_email as $setting) {
             if (defined($setting) && !is_email(constant($setting))) {
-                return new WP_Error( 'multisite-smtp', sprintf( __( 'Value of %s is not a valid email address. Check wp-config.php, or ensure a valid fallback is available.', 'multisite-smtp' ), $setting ) );
+                return new WP_Error( 'global-smtp', sprintf( __( 'Value of %s is not a valid email address. Check wp-config.php, or ensure a valid fallback is available.', 'global-smtp' ), $setting ) );
             }
         }
 
         foreach ($this->validations->is_int as $setting) {
             if(defined($setting) && !is_int(constant($setting)) ) {
-                return new WP_Error( 'multisite-smtp', sprintf( __( '%s should be an integer. The force is not so strong with this one...', 'multisite-smtp' ), $setting ) );
+                return new WP_Error( 'global-smtp', sprintf( __( '%s should be an integer. The force is not so strong with this one...', 'global-smtp' ), $setting ) );
             }
         }
 
         foreach ($this->validations->should_be as $setting => $allowed) {
             if(defined($setting) && !in_array(constant($setting), $allowed)) {
-                return new WP_Error( 'multisite-smtp', sprintf( __( '%s is invalid. It should be one of these values: "%s"', 'multisite-smtp' ), $setting, implode('" , "',$allowed) ) );
+                return new WP_Error( 'global-smtp', sprintf( __( '%s is invalid. It should be one of these values: "%s"', 'global-smtp' ), $setting, implode('" , "',$allowed) ) );
             }
         }
 
@@ -222,4 +222,4 @@ class Multisite_SMTP {
 /**
  * Fire it up.
  */
-Multisite_SMTP::launch();
+Global_SMTP_Mailer::launch();
