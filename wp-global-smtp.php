@@ -1,13 +1,38 @@
 <?php
+
 /*
 Plugin Name: Global SMTP
 Plugin URI: https://github.com/rohmann/wp-global-smtp
 Description: Allows for the setup of SMTP mail via constants in wp-config.php
+
 Author: Alexander Rohmann
 Author URI: https://github.com/rohmann/
-Version: 2.2.0
+
+Version: 2.3.0
+License: GPLv2
+
 Text Domain: global-smtp
+Domain Path: /languages/
+Network: True
 */
+
+// Prevent direct access to the plugin
+if ( !defined( 'ABSPATH' ) )
+	die( 'Good try! :)' );
+
+// Define some constants
+define( 'GLOBAL_SMTP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'GLOBAL_SMTP_PLUGIN_URL', plugins_url( '', __FILE__ ) );
+
+// Localization
+function global_smtp_init() {
+	load_plugin_textdomain( 'global-smtp', false, dirname( plugin_basename( __FILE__ ) . '/languages/' ) );
+}
+add_action( 'init', 'global_smtp_init' );
+
+// Include files
+if ( is_admin() )
+	include_once( GLOBAL_SMTP_PLUGIN_DIR . '/lib/admin.php' );
 
 /**
  * Configures WordPress PHPMailer with values from wp-config.php
