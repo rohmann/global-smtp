@@ -1,9 +1,9 @@
 Global SMTP
 =================
 
-This plugin allows you to configure SMTP mail on WordPress **(including multisite)** with nothing more than wp-config.php constants.
+Global SMTP is a utility plugin designed to easily configure SMTP for WordPress by adding a set of constants to your `wp-config.php` file.
 
-It's easy to automate this configuration for new site installs with the use of WP-CLI: [https://github.com/wp-cli/wp-cli](https://github.com/wp-cli/wp-cli)
+When used with multisite, the configuration is applied network wide. This is often handy to install as a "must use" plugin.
 
 Getting started
 ---------------
