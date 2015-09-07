@@ -19,17 +19,16 @@ define('GLOBAL_SMTP_PASSWORD','password');
 ```
 
 Assumed defaults:
-From -> Network admin email address
-FromName -> Network Name
-Port -> 465
-Secure -> ssl
+* From and From Name: WordPress defaults (or possibly overriden by your mail server)
+* Port -> 587
+* Secure -> tls
 
 You can specify your own with these statements:
 ```
 define('GLOBAL_SMTP_FROM','you@example.com');
 define('GLOBAL_SMTP_FROM_NAME','Your Name');
-define('GLOBAL_SMTP_PORT',587);
-define('GLOBAL_SMTP_SECURE;','tls');
+define('GLOBAL_SMTP_PORT',465); // use SSL
+define('GLOBAL_SMTP_SECURE;','ssl');
 ```
 
 You can also specify some other values for the SMTP mailer:
@@ -51,7 +50,7 @@ That will prevent Global SMTP from initializing at all; quite useful for develop
 Debugging
 ---------
 
-This plugin will trigger warnings if you've done something wrong. Just be sure to have [WP_DEBUG](http://codex.wordpress.org/Debugging_in_WordPress#WP_DEBUG "Title") enabled. 
+This plugin will trigger warnings if you've done something wrong. Just be sure to have [WP_DEBUG](http://codex.wordpress.org/Debugging_in_WordPress#WP_DEBUG "Title") enabled.
 
 You can turn on SMTP debug by including this statement:
 
