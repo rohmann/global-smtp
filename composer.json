@@ -1,0 +1,19 @@
+{
+  "name": "rohmann/global-smtp",
+  "description": "Utility plugin to setup SMTP mail via constants in wp-config.php",
+  "keywords": ["wordpress", "smtp", "multisite"],
+  "homepage": "https://github.com/rohmann/global-smtp",
+  "license": "GPLv2",
+  "authors": [
+    {
+      "name": "Alexander Rohmann",
+      "email": "alexander@rohmann.us",
+      "homepage": "https://rohmann.us"
+    }
+  ],
+  "type": "wordpress-muplugin",
+  "require": {
+    "php": ">=5.3.0",
+    "composer/installers": "~1.0"
+  }
+}
