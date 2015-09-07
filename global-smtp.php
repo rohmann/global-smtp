@@ -5,7 +5,7 @@ Plugin URI: https://github.com/rohmann/global-smtp
 Description: Allows for the setup of SMTP mail via constants in wp-config.php
 Author: Alexander Rohmann
 Author URI: https://github.com/rohmann/
-Version: 2.2.0
+Version: 1.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: global-smtp
