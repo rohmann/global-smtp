@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Global SMTP
-Plugin URI: https://github.com/rohmann/wp-global-smtp
+Plugin URI: https://github.com/rohmann/global-smtp
 Description: Allows for the setup of SMTP mail via constants in wp-config.php
 Author: Alexander Rohmann
 Author URI: https://github.com/rohmann/
@@ -12,7 +12,7 @@ Text Domain: global-smtp
 
 /**
 * Configures WordPress PHPMailer with values from wp-config.php
-* Documentation: https://github.com/rohmann/wp-global-smtp
+* Documentation: https://github.com/rohmann/global-smtp
 */
 class Global_SMTP_Mailer {
 
