@@ -104,20 +104,20 @@ class Global_SMTP_Mailer {
 
 		<div class="wrap">
 			<h1><?php echo $this->title; ?></h1>
-			<p>To test your configuration, we recommend installing the <a href="https://wordpress.org/plugins/check-email/">check email plugin</a>.
-			<p><strong>This page will no longer appear once a valid configuration is found.</strong></p>
+			<p><?php printf( __( 'To test your configuration, we recommend installing the <a href="%s">check email plugin', 'global-smtp' ), 'https://wordpress.org/plugins/check-email/' ); ?></a>.
+			<p><strong><?php _e( 'This page will no longer appear once a valid configuration is found.', 'global-smtp' ); ?></strong></p>
 
 			<div class="error">
 				<?php foreach ( $this->errors as $error ) : ?>
 					<p><?php echo $error->get_error_message(); ?></p>
 				<?php endforeach;?>
 			</div>
-			<p><strong>Example of minimum configuration</strong> (example for gmail)</p>
+			<p><?php _e( '<strong>Example of minimum configuration</strong> (example for gmail)', 'global-smtp' ) ?></p>
 			<p><textarea class="code" readonly="readonly" cols="50" rows="3"><?php echo $minimum; ?></textarea></p>
-			<p>It is assumed that TLS encryption will be used on port 587. The "from name" and "from address" will use the WordPress defaults, however many email providers may not allow them to be overriden.</p>
+			<p><?php _e( 'It is assumed that TLS encryption will be used on port 587. The "from name" and "from address" will use the WordPress defaults, however many email providers may not allow them to be overriden.', 'global-smtp' ) ?></p>
 			<hr>
-			<p><strong>Some optional statements</strong></p>
-			<p>For a complete list, view the plugin readme.</p>
+			<p><strong><?php _e( 'Some optional statements', 'global-smtp' ) ?></strong></p>
+			<p><?php _e( 'For a complete list, view the plugin readme.', 'global-smtp' ) ?></p>
 			<p><textarea class="code" readonly="readonly" cols="50" rows="4"><?php echo $optional; ?></textarea></p>
 		</div>
 
