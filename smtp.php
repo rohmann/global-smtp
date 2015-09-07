@@ -22,23 +22,20 @@ class Global_SMTP_Mailer {
 	protected static $instance;
 
 	/**
-	* Store validation types
-	*/
-	protected $validations;
-
-	/**
 	* Checks settings, and hooks into phpmailer if everything is good.
 	*/
 	function __construct() {
 
 		$this->prepare_settings();
-		$errors = $this->validate();
+		$this->errors = $this->validate();
 		$this->cancel = array( 'from' => false, 'from_name' => false );
 
-		if( !empty( $errors ) ) {
-			trigger_error( $errors[0]->get_error_message(), E_USER_WARNING );
+		if( !empty( $this->errors ) ) {
+			$this->is_multisite = is_multisite();
+			$this->title = __( 'Global SMTP Setup', 'global-smtp' );
+			add_action( ( $this->is_multisite ) ? 'network_admin_menu' : 'admin_menu', array( $this, 'register_admin_menu' ) );
 		} else {
-			add_action( 'phpmailer_init', array( $this, 'mailer') );
+			add_action( 'phpmailer_init', array( $this, 'mailer' ) );
 		}
 
 
@@ -74,6 +71,57 @@ class Global_SMTP_Mailer {
 	*/
 	public static function instance() {
 		return self::$instance;
+	}
+
+	/**
+	 * Register our admin menu in the correct context.
+	 * @return none
+	 */
+	public function register_admin_menu() {
+		$parent = ( $this->is_multisite ) ? 'settings.php' : 'options-general.php';
+		$capability = ( $this->is_multisite ) ? 'manage_network_options' : 'manage_options';
+		add_submenu_page( $parent, $this->title, $this->title, $capability, 'global-smtp', array( $this, 'render_admin_page' ) );
+	}
+
+	/**
+	 * Display the admin page
+	 * @return none
+	 */
+	public function render_admin_page() {
+
+		$minimum =  "define('GLOBAL_SMTP_HOST','smtp.gmail.com');\n" .
+								"define('GLOBAL_SMTP_USER','user@example.com');\n" .
+								"define('GLOBAL_SMTP_PASSWORD','**********')";
+
+		$optional = "define('GLOBAL_SMTP_FROM','you@example.com');\n" .
+								"define('GLOBAL_SMTP_FROM_NAME','Your Name');\n" .
+								"define('GLOBAL_SMTP_PORT', 465);\n" .
+								"define('GLOBAL_SMTP_SECURE', 'ssl');";
+
+		?>
+
+
+		<div class="wrap">
+			<h1><?php echo $this->title; ?></h1>
+			<p>To test your configuration, we recommend installing the <a href="https://wordpress.org/plugins/check-email/">check email plugin</a>.
+			<p><strong>This page will no longer appear once a valid configuration is found.</strong></p>
+
+			<div class="error">
+				<?php foreach ( $this->errors as $error ) : ?>
+					<p><?php echo $error->get_error_message(); ?></p>
+				<?php endforeach;?>
+			</div>
+			<p><strong>Example of minimum configuration</strong> (example for gmail)</p>
+			<p><textarea class="code" readonly="readonly" cols="50" rows="3"><?php echo $minimum; ?></textarea></p>
+			<p>It is assumed that TLS encryption will be used on port 587. The "from name" and "from address" will use the WordPress defaults, however many email providers may not allow them to be overriden.</p>
+			<hr>
+			<p><strong>Some optional statements</strong></p>
+			<p>For a complete list, view the plugin readme.</p>
+			<p><textarea class="code" readonly="readonly" cols="50" rows="4"><?php echo $optional; ?></textarea></p>
+		</div>
+
+	<?php
+
 	}
 
 	/**
