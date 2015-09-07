@@ -137,8 +137,8 @@ class Global_SMTP_Mailer {
 
 		//Assume any undefined settings
 		$assume = array(
-			'GLOBAL_SMTP_PORT'      => 465,
-			'GLOBAL_SMTP_SECURE'    => 'ssl',
+			'GLOBAL_SMTP_PORT'      => 587,
+			'GLOBAL_SMTP_SECURE'    => 'tls',
 			'GLOBAL_SMTP_TIMEOUT'   => 10,
 			'GLOBAL_SMTP_FROM'      => '',
 			'GLOBAL_SMTP_FROM_NAME' => '',
