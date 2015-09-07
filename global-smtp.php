@@ -260,7 +260,7 @@ class Global_SMTP_Mailer {
 
 		//preset
 		$phpmailer->Mailer = "smtp";
-		$phpmailer->SMTPAuth = ( 'none' != GLOBAL_SMTP_SECURE );
+		$phpmailer->SMTPAuth = true;
 
 		//required
 		$phpmailer->Host = GLOBAL_SMTP_HOST;
