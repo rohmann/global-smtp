@@ -269,7 +269,12 @@ class Global_SMTP_Mailer {
 
 		//assumed
 		$phpmailer->Port = (int) GLOBAL_SMTP_PORT;
-		$phpmailer->SMTPSecure = GLOBAL_SMTP_SECURE;
+		if ( GLOBAL_SMTP_SECURE == 'none' ) {
+      $phpmailer->SMTPSecure = '';
+    }
+    else {
+      $phpmailer->SMTPSecure = GLOBAL_SMTP_SECURE;
+    }
 		$phpmailer->AuthType = GLOBAL_SMTP_AUTH_TYPE;
 
 		//Optional
