@@ -11,11 +11,20 @@ First install as a WordPress pluing. Optionally, you could install as a "must us
 
 Once the plugin is installing installed, add the constants to `wp-config.php`
 
-The minimum requirement is setting the host, username, and password. Everything else will be assumed from some defaults.
+The minimum requirement is setting the host, username, and password (if authentication is needed). Everything else will be assumed from some defaults.
+
 ```
 define('GLOBAL_SMTP_HOST','mail.example.com');
+define('GLOBAL_SMTP_AUTH','true');
 define('GLOBAL_SMTP_USER','admin@example.com');
 define('GLOBAL_SMTP_PASSWORD','password');
+```
+
+or 
+
+```
+define('GLOBAL_SMTP_HOST','mail.example.com');
+define('GLOBAL_SMTP_AUTH','false');
 ```
 
 Assumed defaults:

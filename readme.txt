@@ -28,8 +28,9 @@ When used with multisite, the configuration is applied network wide. This is oft
 
 **Required**
 `GLOBAL_SMTP_HOST` - The FQDN of the mail server (supplied by your SMTP provider)
-`GLOBAL_SMTP_USER` - Username for accessing the mail server (most often your email address).
-`GLOBAL_SMTP_PASSWORD` - Password to authenticate your email account.
+`GLOBAL_SMTP_AUTH` - True if authentication is needed or false if isn't necessary
+`GLOBAL_SMTP_USER` - If GLOBAL_SMTP_AUTH is true, Username for accessing the mail server (most often your email address).
+`GLOBAL_SMTP_PASSWORD` - If GLOBAL_SMTP_AUTH is true, Password to authenticate your email account.
 
 **Optional**
 `GLOBAL_SMTP_FROM` - Email address to use for outgoing mail. Uses WordPress defaults when not set. Many hosts will force this to be the same as the username.
