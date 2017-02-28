@@ -28,7 +28,7 @@ You can specify your own with these statements:
 define('GLOBAL_SMTP_FROM','you@example.com');
 define('GLOBAL_SMTP_FROM_NAME','Your Name');
 define('GLOBAL_SMTP_PORT',465); // use SSL
-define('GLOBAL_SMTP_SECURE;','ssl');
+define('GLOBAL_SMTP_SECURE','ssl');
 ```
 
 You can also specify some other values for the SMTP mailer:
